@@ -6,13 +6,7 @@
 #include <limits>
 
 SplayTree::~SplayTree() {
-    deleteTree(root);
-}
-
-void SplayTree::deleteTree(Node* node) {
-    if (node != nullptr) {
-        delete node;
-    }
+    if (root != nullptr) delete root;
 }
 
 void SplayTree::rotateLeft(Node* p) {

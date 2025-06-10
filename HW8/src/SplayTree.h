@@ -18,6 +18,10 @@ private:
     using Data = typename std::conditional<std::is_same<Value, SetTag>::value, Key, std::pair<Key, Value>>::type;
 public:
     struct Node {
+        ~Node() {
+            if (left != nullptr) delete left;
+            if (right != nullptr) delete right;
+        }
         Data data;
         Node* left;
         Node* right;

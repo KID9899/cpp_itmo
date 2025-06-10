@@ -7,16 +7,8 @@
 
 template <typename Key, typename Value>
 SplayTree<Key, Value>::~SplayTree() {
-    deleteTree(root);
-}
-
-template <typename Key, typename Value>
-void SplayTree<Key, Value>::deleteTree(Node* node) {
-    if (node) {
-        deleteTree(node->left);
-        deleteTree(node->right);
-        delete node;
-    }
+    if (!root) return;
+    delete root;
 }
 
 template <typename Key, typename Value>
