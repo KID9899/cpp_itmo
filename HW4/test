@@ -1,0 +1,54 @@
+#!/usr/bin/python3
+
+import os
+from random import seed, choice
+
+l = 1
+p = 2
+
+os.system("rm -rf ./out/*")
+os.mkdir("./out/up-size")
+os.mkdir("./out/down-size")
+os.mkdir("./out/gray-scale")
+os.mkdir("./out/to-yuv")
+
+print("output dir cleaned!")
+
+
+d = sorted(os.listdir("inp"))
+
+for i in d:
+    x = i.split("(")[0]
+    w, h = i.split("(")[1].split(")")[0].split("x")
+    new_i = i.replace("(", "\\(").replace(")", "\\)")
+    os.system(f"./hw4 --input ./inp/{new_i} --output ./out/{x}.bmp --width {w} --height {h} --input-format yuv --output-format bmp")
+    os.system(f"./hw4 --input ./inp/{new_i} --output ./out/up-size/{x}\\({p}\\).bmp --width {w} --height {h} --up-size {p} --input-format yuv --output-format bmp")
+    os.system(f"./hw4 --input ./inp/{new_i} --output ./out/down-size/{x}\\({l}\\).bmp --width {w} --height {h} --down-size {l} --input-format yuv --output-format bmp")
+    os.system(f"./hw4 --input ./inp/{new_i} --output ./out/gray-scale/{x}.bmp --width {w} --height {h} --to-gray-scale --input-format yuv --output-format bmp")
+
+    os.system(f"./hw4 --input ./out/{x}.bmp --output ./out/to-yuv/{x}.yuv --input-format bmp --output-format yuv")
+    os.system(f"./hw4 ---compare ./out/{x}.bmp ./out/gray-scale/{x}.bmp --format bmp")
+    l = (l - 1) % 4 + 2
+    p = (p - 1) % 4 + 2
+    print(x, "converted!")
+
+
+seed(10050011)
+
+for _ in range(30):
+    i, j = choice(d), choice(d)
+
+    x1 = i.split("(")[0]
+    w1, h1 = i.split("(")[1].split(")")[0].split("x")
+    new_i = i.replace("(", "\\(").replace(")", "\\)")
+
+    x2 = j.split("(")[0]
+    w2, h2 = j.split("(")[1].split(")")[0].split("x")
+    new_j = j.replace("(", "\\(").replace(")", "\\)")
+    print("Comparing:", x1, x2)
+    print("--     YUV:  ")
+    os.system(f"./hw4 ---compare ./inp/{new_i} ./inp/{new_j} --format yuv --width {w1} --height {h1}")
+    print("-- GEN-BMP:  ")
+    os.system(f"./hw4 ---compare ./out/{x1}.bmp ./out/{x2}.bmp --format bmp")
+    print("-- GEN-YUV:  ")
+    os.system(f"./hw4 ---compare ./out/to-yuv/{x1}.yuv ./out/to-yuv/{x2}.yuv --format yuv --width {w1} --height {h1}")
