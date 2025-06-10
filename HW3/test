@@ -1,0 +1,25 @@
+#!/usr/bin/python3
+
+import os
+
+l = 1
+p = 2
+
+os.system("rm -rf ./out/*")
+os.mkdir("./out/up-size")
+os.mkdir("./out/down-size")
+os.mkdir("./out/gray-scale")
+
+print("output dir cleaned!")
+
+for i in sorted(os.listdir("inp")):
+    x = i.split("(")[0]
+    w, h = i.split("(")[1].split(")")[0].split("x")
+    new_i = i.replace("(", "\\(").replace(")", "\\)")
+    os.system(f"./hw3 --input ./inp/{new_i} --output ./out/{x}.bmp --width {w} --height {h}")
+    os.system(f"./hw3 --input ./inp/{new_i} --output ./out/up-size/{x}\\({p}\\).bmp --width {w} --height {h} --up-size {p}")
+    os.system(f"./hw3 --input ./inp/{new_i} --output ./out/down-size/{x}\\({l}\\).bmp --width {w} --height {h} --down-size {l}")
+    os.system(f"./hw3 --input ./inp/{new_i} --output ./out/gray-scale/{x}.bmp --width {w} --height {h} --to-gray-scale")
+    l = (l - 1) % 4 + 2
+    p = (p - 1) % 4 + 2
+    print(x, "converted!")
