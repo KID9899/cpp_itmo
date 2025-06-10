@@ -10,6 +10,10 @@
 class SplayTree {
     using element_t = int;
     struct Node {
+        ~Node() {
+            if (left != nullptr) delete left;
+            if (right != nullptr) delete right;
+        }
         element_t key;
         Node* left;
         Node* right;

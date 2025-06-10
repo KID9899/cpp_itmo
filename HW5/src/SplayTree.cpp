@@ -11,8 +11,6 @@ SplayTree::~SplayTree() {
 
 void SplayTree::deleteTree(Node* node) {
     if (node != nullptr) {
-        deleteTree(node->left);
-        deleteTree(node->right);
         delete node;
     }
 }
